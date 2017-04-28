@@ -4,8 +4,8 @@ Python scripts for converting 10x genomics single cell RNAseq data to Xena dense
 
 #### What is 10x genomics HDF5 Gene-Barcode Matrix Format
 
-    https://support.10xgenomics.com/single-cell/software/pipelines/latest/advanced/h5_matrices
-    See File Format section
+https://support.10xgenomics.com/single-cell/software/pipelines/latest/advanced/h5_matrices
+See File Format
 
 
 #### Requirement
@@ -19,10 +19,10 @@ Python scripts for converting 10x genomics single cell RNAseq data to Xena dense
 
 #### Usage
 
-    1. You need to get a basic information about the h5 file
+    1. Get a basic information about the h5 file, find out group name
     python h5_info.py your_h5file
 
-    2. Slow and simple
+    2. Slow and simple convertion
     python h5_xena.py your_Gene-Barcode_Matrix_h5 groupname output_tsv_file
 
     3. Fast
