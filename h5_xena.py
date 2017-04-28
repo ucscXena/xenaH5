@@ -39,7 +39,7 @@ def h5_T_to_xena (output, data, indices, indptr, counter_indptr_size, genes, bar
 
     for i in range (0, N):
         if i % 500 == 0:
-            print "old", i
+            print "reading sample", i
         indices_range = indices[indptr[i]:indptr[i+1]]
         data_range = data[indptr[i]:indptr[i+1]]
         for index in range (0, len(indices_range)):
@@ -110,18 +110,29 @@ barcodes = hF[group + "/barcodes"]
 shape = hF[group + "/shape"]
 rowN = shape[0]
 colN = shape[1]
-
-assert(len(indptr) - 1 == colN)
 counter_indptr_size = rowN
 
-#optional start and end
-if len(sys.argv[:]) == 6:
+#basic sanity check
+assert(len(indptr) - 1 == colN)
+assert(len(indptr)-1 == len(genes) || len(indptr)-1 == len(barcodes))
+
+if len(sys.argv[:]) == 6:  #fast using optional start and stop
+    # must be in the correct orientation
+    assert (len(indptr) -1 == len(genes))
+
     start = int(sys.argv[4])
     end = int(sys.argv[5])
     assert (end < len(indptr))
-else:
-    start = 0
-    end = len(indptr) -1 ### total
 
-h5_to_xena (output, data, indices, indptr, counter_indptr_size, genes, barcodes, start, end)
+    h5_to_xena (output, data, indices, indptr, counter_indptr_size, genes, barcodes, start, end)
+
+else: #slow
+    if (len(indptr)-1 == len(genes)):  #xena orientation
+        print "using h5 orientation, write out to xena file"
+        start = 0
+        end = len(indptr) -1 ### total
+        h5_to_xena (output, data, indices, indptr, counter_indptr_size, genes, barcodes, start, end)
+    elif (len(indptr) -1 == len(barcodes)): # transpose h5 in memory and write out to xena orientation
+        print "transpose h5 in memory, then write out to xena file"
+        h5_T_to_xena (output, data, indices, indptr, counter_indptr_size, genes, barcodes)
 
