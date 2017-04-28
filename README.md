@@ -8,7 +8,7 @@ https://support.10xgenomics.com/single-cell/software/pipelines/latest/advanced/h
 See File Format
 
 
-#### Requirement
+#### xenaH5 Requirement
     python 2
 
     python modules
@@ -17,7 +17,7 @@ See File Format
         uuid
 
 
-#### Usage
+#### xenaH5 Usage
 
     1. Get a basic information about the h5 file, find out group name
     python h5_info.py your_h5file
