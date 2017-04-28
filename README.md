@@ -23,9 +23,9 @@ See File Format
     python h5_info.py your_h5file
 
     2. Slow and simple convertion
-    python h5_xena.py your_Gene-Barcode_Matrix_h5 groupname output_tsv_file
+    python h5_xena.py Gene-Barcode_Matrix_h5 groupname output_tsv_file
 
     3. Fast
-        3.1 python h5_transpose.py your_Gene-Barcode_Matrix_h5 groupname output_transposed_h5
+        3.1 python h5_transpose.py Gene-Barcode_Matrix_h5 groupname output_transposed_h5
         3.2 python h5_xena_fast.py output_transposed_h5 groupname output_tsv_file
 
