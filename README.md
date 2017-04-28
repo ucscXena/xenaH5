@@ -29,3 +29,7 @@ See File Format
         3.1 python h5_transpose.py Gene-Barcode_Matrix_h5 groupname output_transposed_h5
         3.2 python h5_xena_fast.py output_transposed_h5 groupname output_tsv_file
 
+
+#### Load xena dense matrix file (tsv) into your xena hub
+
+    http://xena.ucsc.edu/private-hubs/
