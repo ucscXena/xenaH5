@@ -11,7 +11,7 @@ def get_h5_info (h5_file):
 
 
 if __name__ == "__main__" and len(sys.argv[:])!=4:
-    print "pyton h5_xena_fast.py h5_input group_name tsv_output"
+    print "pyton h5_xena_fast.py transposed_h5_input group_name tsv_output"
     sys.exit()
 
 matrix_h5 = sys.argv[1]
@@ -50,6 +50,6 @@ for i in range(0, N, K):
     print start, end
     os.system("python " + os.path.dirname(os.path.realpath(__file__)) + "/h5_xena.py " + matrix_h5 + ' ' + group +' ' + output +' ' +str(start)+' '+str(end) +"&")
 
-print "outputs are in directory", tmpDir, "combine when all done"
+print "outputs are being generated in directory", tmpDir, "combine them when all done"
 print ""
 print " cat $(ls -v dir/*) > tsv_output"

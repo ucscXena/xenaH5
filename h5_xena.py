@@ -92,8 +92,8 @@ def h5_to_xena (output, data, indices, indptr, counter_indptr_size, genes, barco
     fout.close()
 
 if __name__ == "__main__" and len(sys.argv[:])!= 4 and len(sys.argv[:])!= 6:
-    print "pyton h5_xena.py h5_input group_name tsv_output start_list(inclusive) end_list(exlusive)\n"
     print "pyton h5_xena.py h5_input group_name tsv_output\n"
+    print "pyton h5_xena.py h5_input group_name tsv_output start_list(inclusive) end_list(exlusive)\n"
     sys.exit()
 
 matrix_h5 = sys.argv[1]
@@ -114,7 +114,7 @@ counter_indptr_size = rowN
 
 #basic sanity check
 assert(len(indptr) - 1 == colN)
-assert(len(indptr)-1 == len(genes) || len(indptr)-1 == len(barcodes))
+assert(len(indptr)-1 == len(genes) or len(indptr)-1 == len(barcodes))
 
 if len(sys.argv[:]) == 6:  #fast using optional start and stop
     # must be in the correct orientation
