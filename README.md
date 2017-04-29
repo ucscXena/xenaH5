@@ -1,12 +1,11 @@
 # xenaH5
-Python scripts for converting 10x genomics single cell RNAseq data to Xena dense matrix file.  This is particular for handling the large HDF5 Gene-Barcode Matrix Format
+Python scripts for converting 10x genomics single cell RNAseq data to Xena dense matrix file, particular for handling the large HDF5 Gene-Barcode Matrix Format.
 
 ---------
 
 #### What is 10x genomics HDF5 Gene-Barcode Matrix Format
 
 https://support.10xgenomics.com/single-cell/software/pipelines/latest/advanced/h5_matrices
-See File Format
 
 
 #### xenaH5 Requirement
@@ -33,4 +32,4 @@ See File Format
 
 #### Load xena dense matrix file (tsv) into your xena hub
 
-    [http://xena.ucsc.edu/private-hubs/](http://xena.ucsc.edu/private-hubs/)
+[http://xena.ucsc.edu/private-hubs/](http://xena.ucsc.edu/private-hubs/)
