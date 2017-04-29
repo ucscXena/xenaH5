@@ -32,4 +32,4 @@ https://support.10xgenomics.com/single-cell/software/pipelines/latest/advanced/h
 
 #### Load xena dense matrix file (tsv) into your xena hub
 
-[http://xena.ucsc.edu/private-hubs/](http://xena.ucsc.edu/private-hubs/)
+http://xena.ucsc.edu/private-hubs/
