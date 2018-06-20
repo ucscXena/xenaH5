@@ -42,6 +42,8 @@ tmpDir = output + '_'+ str(uuid.uuid4())
 os.system("mkdir "+ tmpDir)
 count =0
 
+hF.close()
+
 for i in range(0, N, K):
     count = count +1
     start =i

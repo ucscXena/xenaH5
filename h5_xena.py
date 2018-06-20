@@ -100,7 +100,7 @@ matrix_h5 = sys.argv[1]
 output = sys.argv[3]
 group = sys.argv[2]
 
-hF = h5py.File(matrix_h5)
+hF = h5py.File(matrix_h5, 'r')
 indptr = hF[group +"/indptr"]
 indices = hF[group + "/indices"]
 data = hF[group + "/data"]
@@ -123,7 +123,7 @@ if len(sys.argv[:]) == 6:  #fast using optional start and stop
     start = int(sys.argv[4])
     end = int(sys.argv[5])
     assert (end < len(indptr))
-
+    
     h5_to_xena (output, data, indices, indptr, counter_indptr_size, genes, barcodes, start, end)
 
 else: #slow
