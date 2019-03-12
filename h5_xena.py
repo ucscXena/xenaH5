@@ -54,7 +54,7 @@ def h5_T_to_xena (output, data, indices, indptr, counter_indptr_size, genes, bar
         new_indices[i].resize(new_indptr[i])
 
     fout =open(output,'w')
-    fout.write("sample\t"+string.join(barcodes,'\t')+'\n')
+    fout.write("cell\t"+string.join(barcodes,'\t')+'\n')
 
     for i in range (0, counter_indptr_size):
         gene = genes[i]
@@ -72,7 +72,7 @@ def h5_T_to_xena (output, data, indices, indptr, counter_indptr_size, genes, bar
 def h5_to_xena (output, data, indices, indptr, counter_indptr_size, genes, barcodes, start, end):
     fout =open(output,'w')
     if start ==0:
-        fout.write("sample\t"+string.join(barcodes,'\t')+'\n')
+        fout.write("cell\t"+string.join(barcodes,'\t')+'\n')
 
     #the standard CSC representation
     #where the row indices for column i are stored in indices[indptr[i]:indptr[i+1]] and
