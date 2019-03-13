@@ -91,7 +91,7 @@ def h5_to_xena (output, data, indices, indptr, counter_indptr_size, genes, barco
         fout.write(gene+'\t'+string.join(map(lambda x: str(x), values),'\t')+'\n')
     fout.close()
 
-if __name__ == "__main__" and len(sys.argv[:])!= 4 and len(sys.argv[:])!= 6:
+if __name__ == "__main__" and len(sys.argv[:]) not in [4,5,6,7]:
     print "pyton h5_xena.py h5_input group_name tsv_output barcode_prefix(optional)\n"
     print "pyton h5_xena.py h5_input group_name tsv_output start_list(inclusive) end_list(exlusive) barcode_prefix(optional)\n"
     sys.exit()
