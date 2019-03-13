@@ -10,8 +10,8 @@ def get_h5_info (h5_file):
     hF.visititems(print_attrs)
 
 
-if __name__ == "__main__" and len(sys.argv[:])!=4:
-    print "pyton h5_xena_fast.py transposed_h5_input group_name tsv_output"
+if __name__ == "__main__" and len(sys.argv[:]) not in [4, 5]:
+    print "pyton h5_xena_fast.py transposed_h5_input group_name tsv_output barcode_prefix(optional)"
     sys.exit()
 
 matrix_h5 = sys.argv[1]
@@ -44,13 +44,17 @@ count =0
 
 hF.close()
 
+if len(sys.argv[:] == 5):
+    barcode_prefix = sys.argv[4]
+    barcodes = barcodes.map(lambda x: barcode_prefix + x, barcodes)
+
 for i in range(0, N, K):
     count = count +1
     start =i
     end = min(i+K,N)
     output = tmpDir +"/" + str(count)
     print start, end
-    os.system("python " + os.path.dirname(os.path.realpath(__file__)) + "/h5_xena.py " + matrix_h5 + ' ' + group +' ' + output +' ' +str(start)+' '+str(end) +"&")
+    os.system("python " + os.path.dirname(os.path.realpath(__file__)) + "/h5_xena.py " + matrix_h5 + ' ' + group +' ' + output +' ' +str(start)+' '+str(end) + ' ' + barcode_prefix + ' ' + "&")
 
 print "outputs are being generated in directory", tmpDir, "combine them when all done"
 print ""
