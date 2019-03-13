@@ -46,7 +46,7 @@ hF.close()
 
 if len(sys.argv[:] == 5):
     barcode_prefix = sys.argv[4]
-    barcodes = barcodes.map(lambda x: barcode_prefix + x, barcodes)
+    barcodes = map(lambda x: barcode_prefix + x, barcodes)
 
 for i in range(0, N, K):
     count = count +1

@@ -121,7 +121,7 @@ if len(sys.argv[:]) in [5, 7]:
         barcode_prefix = sys.argv[4]
     elif len(sys.argv[:]) == 5:
         barcode_prefix = sys.argv[6]
-    barcodes = barcodes.map(lambda x: barcode_prefix + x, barcodes)
+    barcodes = map(lambda x: barcode_prefix + x, barcodes)
 
 if len(sys.argv[:]) in [6, 7]:  #fast using optional start and stop
     # must be in the correct orientation
