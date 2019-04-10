@@ -71,13 +71,19 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 	indptr_offset = g['indptr'][counter_indptr]
 	print "indptr offset", indptr_offset
 
-	for i in range (0, len(this_indptr)):
-		g['indptr'][counter_indptr + i] = this_indptr[i] + indptr_offset
 	g['indptr'][counter_indptr : counter_indptr + len(this_indptr)] = map(lambda x : x + indptr_offset, this_indptr)
+	#print g['indptr'][counter_indptr], this_indptr[0], g['indptr'][0]
+
+	# barcode
+	g['barcodes'][counter_indptr :  counter_indptr + len(this_barcodes)] = this_barcodes[:]
+	# counter_indptr
 	counter_indptr = counter_indptr + len(this_indptr) - 1
 
+	# indices
 	g['indices'][counter_data : counter_data + len(this_indices) ] = this_indices[:]
+	# data
 	g['data'][counter_data : counter_data + len(this_data) ] = this_data[:]
+	# counter_data
 	counter_data = counter_data + len(this_data)
 
 	return counter_data,  counter_indptr
@@ -89,7 +95,7 @@ def getSizeH5file(h5file, group):
 	return len(this_indptr), len(this_data)
 
 if __name__ == "__main__" and len(sys.argv[:])!= 5:
-    print "pyton 10x_h5_merge.py inputdir namepatten(e.g filtered_gene_bc_matrices_h5.h5) group_name output_h5"
+    print "pyton 10x_h5_merge.py inputdir filenamepatten(e.g filtered_gene_bc_matrices_h5.h5) group_name output_h5"
     sys.exit()
 
 h5filedir = sys.argv[1]
