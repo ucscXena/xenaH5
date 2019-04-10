@@ -39,14 +39,14 @@ def addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes):
 	if len(data) == 0:
 		genes = this_genes
 		gene_names = this_gene_names
-	
-	# check genes
-	if not same(genes, this_genes):
-		print h5file, "bad genes, skip"
-		return data, indices, indptr, genes, gene_names, barcodes
+	else:
+		# check genes
+		if not same(genes, this_genes):
+			print h5file, "bad genes, skip"
+			return data, indices, indptr, genes, gene_names, barcodes
 
 	print len(barcodes)
-	barcodes = barcodes.extend(this_barcodes)
+	barcodes.extend(this_barcodes)
 	print len(barcodes)
 	#data = this_data
 	#indptr = this_indptr
