@@ -10,4 +10,4 @@ namepatten = sys.argv[2]
 for root, dirs, files in os.walk(h5filedir):
 	for file in files:
 		if file == namepatten:
-			print file
+			print file, root
