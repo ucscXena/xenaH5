@@ -109,10 +109,12 @@ for root, dirs, files in os.walk(h5filedir):
 			count = count +1
 			if count == 2:
 				sys.exit()
-			this_size_indptr, this_size_data = getSizeH5file(h5file)
+			this_size_indptr, this_size_data = getSizeH5file(h5file, group)
 			size_data = size_data + this_size_data
 			size_indptr = size_indptr + this_indptr - 1
 print size_indptr, size_data
+
+
 count = 0
 for root, dirs, files in os.walk(h5filedir):
 	for file in files:
