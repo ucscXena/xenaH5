@@ -32,6 +32,7 @@ def output_init (output, size_data, size_indptr):
 	g.create_dataset('data', (size_data,), dtype='i4', compression="gzip")
 	g.create_dataset('indices', (size_data,), dtype='i8', compression="gzip")
 	g.create_dataset('barcodes', (size_indptr-1,),  dtype='S18', compression="gzip")
+	g.create_dataset('shape', (2,), dtype='i4')
 	g['indptr'][0] = 0
 	return f
 
@@ -86,6 +87,10 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 	# counter_data
 	counter_data = counter_data + len(this_data)
 
+	# shape
+	g['shape'][0] = len(g['genes'])
+	g['shape'][1] = len(g['barcodes'])
+
 	return counter_data,  counter_indptr
 
 def getSizeH5file(h5file, group):
@@ -126,7 +131,11 @@ for root, dirs, files in os.walk(h5filedir):
 			h5file = root + '/' +  file
 			count = count +1
 			counter_data,  counter_indptr = addH5file(h5file, group, fout[group], counter_data, counter_indptr)
-			if count == 2:
-				sys.exit()
+	if count == 2:
+		break		
 
+#set shape
+fout[group].attrs['shape'] = fout[group]['shape']
+#output
+fout.close()
 #output_h5 (output, group, data, indices, indptr, shape, genes, gene_names, barcodes)
