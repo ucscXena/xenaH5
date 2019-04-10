@@ -61,10 +61,16 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 	print "indptr offset", indptr_offset
 	counter_indptr = counter_indptr + len(this_indptr) - 1
 
+#	for i in range (0, len(this_indices)):
+	g['indices'][counter_data: counter_data + len(this_indices) ] = this_indices[:]
+	print "indices"
+	
 	for i in range (0, len(this_data)):
 		g['data'][counter_data + i ] = this_data[i]
 	counter_data = counter_data + len(this_data)
-	
+
+
+
 	return counter_data,  counter_indptr
 
 def getSizeH5file(h5file, group):
