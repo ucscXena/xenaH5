@@ -39,30 +39,36 @@ def addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes):
 	if len(data) == 0:
 		genes = this_genes
 		gene_names = this_gene_names
+		indptr = this_indptr
+		data = this_data
+		indices = this_indices
+		barcodes = this_barcodes
+		return data, indices, indptr, genes, gene_names, barcodes
+
 	else:
 		# check genes
 		if not same(genes, this_genes):
 			print h5file, "bad genes, skip"
 			return data, indices, indptr, genes, gene_names, barcodes
 
-	barcodes.extend(this_barcodes)
-	print "bar"
-	#the standard CSC representation
-    #where the row indices for column i are stored in indices[indptr[i]:indptr[i+1]] and
-    #their corresponding values are stored in data[indptr[i]:indptr[i+1]].
-    #If the shape parameter is not supplied, the matrix dimensions are inferred from the index arrays.
+		print "chk"
+		barcodes.extend(this_barcodes)
+		print "bar"
+		#the standard CSC representation
+	    #where the row indices for column i are stored in indices[indptr[i]:indptr[i+1]] and
+	    #their corresponding values are stored in data[indptr[i]:indptr[i+1]].
+	    #If the shape parameter is not supplied, the matrix dimensions are inferred from the index arrays.
 
-	indptr_offset = indptr[-1]
-	offset_indptr = map(lambda x: x+ indptr_offset, this_indptr)
-	print "indptr offset"
+		indptr_offset = indptr[-1]
+		offset_indptr = map(lambda x: x+ indptr_offset, this_indptr)
+		print "indptr offset"
 
-	data.extend(this_data)
-	indices.extend(this_indices)
+		data.extend(this_data)
+		indices.extend(this_indices)
 
-	indptr.extend(offset_indptr[1:])
-	#indptr = this_indptr
-	#shape = this_shape
-	return data, indices, indptr, genes, gene_names, barcodes
+		indptr.extend(offset_indptr[1:])
+		#indptr = this_indptr
+		#shape = this_shape
 
 
 if __name__ == "__main__" and len(sys.argv[:])!= 5:
