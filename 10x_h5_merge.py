@@ -64,12 +64,11 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 #	for i in range (0, len(this_indices)):
 	g['indices'][counter_data: counter_data + len(this_indices) ] = this_indices[:]
 	print "indices"
-	
-	for i in range (0, len(this_data)):
-		g['data'][counter_data + i ] = this_data[i]
+
+#	for i in range (0, len(this_data)):
+	g['data'][counter_data: counter_data + len(this_data) ] = this_data[:]
+	print "data"
 	counter_data = counter_data + len(this_data)
-
-
 
 	return counter_data,  counter_indptr
 
