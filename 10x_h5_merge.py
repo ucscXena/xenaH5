@@ -50,18 +50,21 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 		print "chk"
     '''
 	#the standard CSC representation
-    #where the row indices for column i are stored in indices[indptr[i]:indptr[i+1]] and
-    #their corresponding values are stored in data[indptr[i]:indptr[i+1]].
-    #If the shape parameter is not supplied, the matrix dimensions are inferred from the index arrays.
+	#where the row indices for column i are stored in indices[indptr[i]:indptr[i+1]] and
+	#their corresponding values are stored in data[indptr[i]:indptr[i+1]].
+	#If the shape parameter is not supplied, the matrix dimensions are inferred from the index arrays.
 
 	# indptr
-	
 	indptr_offset = g['indptr'][counter_indptr]
 	for i in range (0, len(this_indptr)):
 		g['indptr'][counter_indptr + i] = this_indptr[i] + indptr_offset
 	print "indptr offset", indptr_offset
-	counter_indptr = counter_indptr + len(this_indptr)
+	counter_indptr = counter_indptr + len(this_indptr) - 1
 
+	for i in range (0, len(this_data)):
+		g['data'][counter_data + i ] = this_data[i]
+	counter_data = counter_data + len(this_data)
+	
 	return counter_data,  counter_indptr
 
 def getSizeH5file(h5file, group):
