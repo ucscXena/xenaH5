@@ -81,7 +81,7 @@ for root, dirs, files in os.walk(h5filedir):
 	for file in files:
 		if file == namepatten:
 			h5file = root + '/' +  file
-			addH5file(h5file)
+			addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes)
 			sys.exit()
 
 
