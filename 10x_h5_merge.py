@@ -1,4 +1,5 @@
 import h5py
+from array import *
 import array
 import os, sys
 
@@ -47,29 +48,37 @@ def addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes):
 
 	else:
 		# check genes
+		'''
 		if not same(genes, this_genes):
 			print h5file, "bad genes, skip"
 			return data, indices, indptr, genes, gene_names, barcodes
 
 		print "chk"
-		barcodes.extend(this_barcodes)
-		print "bar"
+		'''
+
 		#the standard CSC representation
 	    #where the row indices for column i are stored in indices[indptr[i]:indptr[i+1]] and
 	    #their corresponding values are stored in data[indptr[i]:indptr[i+1]].
 	    #If the shape parameter is not supplied, the matrix dimensions are inferred from the index arrays.
 
+
 		indptr_offset = indptr[-1]
 		offset_indptr = map(lambda x: x+ indptr_offset, this_indptr)
-		print "indptr offset"
+		print "indptr offset", indptr_offset
 
+		indptr.extend(offset_indptr[1:])
+
+		barcodes.extend(this_barcodes)
+		print "bar"
+		
 		data.extend(this_data)
 		indices.extend(this_indices)
 
-		indptr.extend(offset_indptr[1:])
-		#indptr = this_indptr
-		#shape = this_shape
-
+def getSizeH5file(h5file, group):
+	hF = h5py.File(h5file)
+	this_indptr = hF[group +"/indptr"]
+	this_data = hF[group + "/data"]
+	return len(this_indptr), len(this_data)
 
 if __name__ == "__main__" and len(sys.argv[:])!= 5:
     print "pyton 10x_h5_merge.py inputdir namepatten(e.g filtered_gene_bc_matrices_h5.h5) group_name output_h5"
@@ -90,6 +99,21 @@ barcodes = [] #string
 shape = array.array('i') # two integers
 
 count = 0
+size_indptr = 1
+size_data = 0
+
+for root, dirs, files in os.walk(h5filedir):
+	for file in files:
+		if file == namepatten:
+			h5file = root + '/' +  file
+			count = count +1
+			if count == 2:
+				sys.exit()
+			this_size_indptr, this_size_data = getSizeH5file(h5file)
+			size_data = size_data + this_size_data
+			size_indptr = size_indptr + this_indptr - 1
+print size_indptr, size_data
+count = 0
 for root, dirs, files in os.walk(h5filedir):
 	for file in files:
 		if file == namepatten:
@@ -97,8 +121,7 @@ for root, dirs, files in os.walk(h5filedir):
 			count = count +1
 			data, indices, indptr, genes, gene_names, barcodes = \
 				addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes)
-			if count == 2:
-				sys.exit()
+
 
 
 output_h5 (output, group, data, indices, indptr, shape, genes, gene_names, barcodes)
