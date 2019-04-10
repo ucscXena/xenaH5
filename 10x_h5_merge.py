@@ -1,4 +1,5 @@
 import h5py
+import array
 import os, sys
 
 def output_h5 (output, group, data, indices, indptr, shape, genes, gene_names, barcodes):
@@ -42,7 +43,7 @@ def addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes):
 	# check genes
 	if not same(genes, this_genes):
 		print "bad genes"
-		
+
 	# check gene_names
 	if not same(gene_names, this_gene_names):
 		print "bad gene names"
@@ -68,13 +69,13 @@ group = sys.argv[3]
 output = sys.argv[4]
 
 #output initiation
-indptr = array('i')
-indices = array('i')
-data = array('f')
+indptr = array.array('i')
+indices = array.array('i')
+data = array.array('f')
 genes = [] #string
 gene_names = [] #string
 barcodes = [] #string
-shape = array('i') # two integers
+shape = array.array('i') # two integers
 
 for root, dirs, files in os.walk(h5filedir):
 	for file in files:
