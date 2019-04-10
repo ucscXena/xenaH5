@@ -74,7 +74,6 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 	for i in range (0, len(this_indptr)):
 		g['indptr'][counter_indptr + i] = this_indptr[i] + indptr_offset
 	g['indptr'][counter_indptr : counter_indptr + len(this_indptr)] = map(lambda x : x + indptr_offset, this_indptr)
-	print g['indptr'][counter_indptr], this_indptr[0], g['indptr'][0]
 	counter_indptr = counter_indptr + len(this_indptr) - 1
 
 	g['indices'][counter_data : counter_data + len(this_indices) ] = this_indices[:]
@@ -120,7 +119,7 @@ for root, dirs, files in os.walk(h5filedir):
 		if file == namepatten:
 			h5file = root + '/' +  file
 			count = count +1
-			counter_data,  counter_indptr = addH5file(h5file, group, g, counter_data, counter_indptr)
+			counter_data,  counter_indptr = addH5file(h5file, group, fout[group], counter_data, counter_indptr)
 			if count == 2:
 				sys.exit()
 
