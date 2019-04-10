@@ -3,19 +3,6 @@ from array import *
 import array
 import os, sys
 
-def output_h5 (output, group, data, indices, indptr, shape, genes, gene_names, barcodes):
-    f = h5py.File(output,'w')
-    g = f.create_group(group)
-    g.create_dataset('data', data= data, compression="gzip")
-    g.create_dataset('indptr',data= indptr, compression="gzip")
-    g.create_dataset('indices',data= indices, compression="gzip")
-    g.create_dataset('genes', data = genes, compression="gzip")
-    g.create_dataset('gene_names', data = gene_names, compression="gzip")
-    g.create_dataset('barcodes', data = barcodes, compression="gzip")
-    g.create_dataset('shape', data = shape)
-    g.attrs['shape'] = shape
-    f.close()
-
 def same(genes, this_genes):
 	if len(genes) != len(this_genes):
 		return False
@@ -26,7 +13,12 @@ def same(genes, this_genes):
         '''
 	return True
 
-def output_init (output, size_data, size_indptr):
+def output_init (output, group, size_data, size_indptr, example_file):
+	# examle file
+	hF = h5py.File(example_file)
+	this_genes = hF[group + "/genes"]
+	this_gene_names = hF[group + "/gene_names"]
+
 	#output initiation
 	f = h5py.File(output,'w')
 	g = f.create_group(group)
@@ -35,6 +27,8 @@ def output_init (output, size_data, size_indptr):
 	g.create_dataset('indices', (size_data,), dtype='i8', compression="gzip")
 	g.create_dataset('barcodes', (size_indptr-1,),  dtype='S18', compression="gzip")
 	g.create_dataset('shape', (2,), dtype='i4')
+	g.create_dataset('genes', data = this_genes, compression="gzip")
+	g.create_dataset('gene_names', data = this_gene_names, compression="gzip")
 	g['indptr'][0] = 0
 	return f
 
@@ -53,16 +47,10 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 	rowN = this_shape[0]
 	colN = this_shape[1]
 
-	if len(g['data']) == 0:
-		g.create_dataset('genes', data = this_genes, compression="gzip")
-		g.create_dataset('gene_names', data = this_gene_names, compression="gzip")
-    
-
-	else:
-		# check genes
-		if not same(g['genes'], this_genes):
-			print h5file, "different genes, skip"
-			return counter_data,  counter_indptr
+	# check genes
+	if not same(g['genes'], this_genes):
+		print h5file, "different genes, skip"
+		return counter_data,  counter_indptr
 
 	#the standard CSC representation
 	#where the row indices for column i are stored in indices[indptr[i]:indptr[i+1]] and
@@ -89,7 +77,7 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 	counter_data = counter_data + len(this_data)
 
 	# shape
-	g['shape'][0] = len(this_genes)
+	g['shape'][0] = len(g['genes'])
 	g['shape'][1] = len(g['barcodes'])
 
 	return counter_data,  counter_indptr
@@ -121,7 +109,7 @@ for root, dirs, files in os.walk(h5filedir):
 			size_indptr = size_indptr + this_size_indptr - 1
 
 print size_indptr, size_data
-fout = output_init (output, size_data, size_indptr)
+fout = output_init (output, group, size_data, size_indptr, h5file)
 
 count = 0
 counter_data = 0
