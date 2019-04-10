@@ -24,7 +24,7 @@ def same(genes, this_genes):
 			return False
 	return True
 
-def addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes):
+def addH5file(h5file, group, g):
 	hF = h5py.File(h5file)
 
 	this_indptr = hF[group +"/indptr"]
@@ -89,16 +89,6 @@ namepatten = sys.argv[2]
 group = sys.argv[3]
 output = sys.argv[4]
 
-#output initiation
-indptr = array.array('i')
-indices = array.array('i')
-data = array.array('f')
-genes = [] #string
-gene_names = [] #string
-barcodes = [] #string
-shape = array.array('i') # two integers
-
-count = 0
 size_indptr = 1
 size_data = 0
 
@@ -107,13 +97,22 @@ for root, dirs, files in os.walk(h5filedir):
 		if file == namepatten:
 			h5file = root + '/' +  file
 			count = count +1
-			if count == 2:
-				sys.exit()
 			this_size_indptr, this_size_data = getSizeH5file(h5file, group)
 			size_data = size_data + this_size_data
 			size_indptr = size_indptr + this_size_indptr - 1
+
 print size_indptr, size_data
 
+#output initiation
+f = h5py.File(output,'w')
+g = f.create_group(group)
+g.create_dataset('indptr', (size_indptr,), dtype='i8', compression="gzip")
+g.create_dataset('data', (size_data,), dtype='i4', compression="gzip")
+g.create_dataset('indices', (size_data,), dtype='i8', compression="gzip")
+g.create_dataset('barcodes', (size_indptr-1,),  dtype='S18', compression="gzip")
+
+print g['data']
+sys.exit()
 
 count = 0
 for root, dirs, files in os.walk(h5filedir):
@@ -121,9 +120,6 @@ for root, dirs, files in os.walk(h5filedir):
 		if file == namepatten:
 			h5file = root + '/' +  file
 			count = count +1
-			data, indices, indptr, genes, gene_names, barcodes = \
-				addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes)
-
-
+			data, indices, indptr, genes, gene_names, barcodes = addH5file(h5file, group, g)
 
 output_h5 (output, group, data, indices, indptr, shape, genes, gene_names, barcodes)
