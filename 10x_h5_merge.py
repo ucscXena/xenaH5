@@ -42,15 +42,12 @@ def addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes):
 	
 	# check genes
 	if not same(genes, this_genes):
-		print "bad genes"
+		print h5file, "bad genes, skip"
+		return data, indices, indptr, genes, gene_names, barcodes
 
-	# check gene_names
-	if not same(gene_names, this_gene_names):
-		print "bad gene names"
-
-	
-
-
+	print len(barcodes)
+	barcodes = barcodes.extend(this_barcodes)
+	print len(barcodes)
 	#data = this_data
 	#indptr = this_indptr
 	#indices = this_indices
@@ -77,12 +74,15 @@ gene_names = [] #string
 barcodes = [] #string
 shape = array.array('i') # two integers
 
+count = 0
 for root, dirs, files in os.walk(h5filedir):
 	for file in files:
 		if file == namepatten:
 			h5file = root + '/' +  file
+			count = count +1
 			addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes)
-			sys.exit()
+			if count == 2:
+				sys.exit()
 
 
-output_h5 (output, group, data, indices, indptr, shape, genes, gene_names, barcodes)
+data, indices, indptr, genes, gene_names, barcodes = output_h5 (output, group, data, indices, indptr, shape, genes, gene_names, barcodes)
