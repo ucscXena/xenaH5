@@ -33,8 +33,8 @@ def addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes):
 	this_gene_names = hF[group + "/gene_names"]
 	this_barcodes = hF[group + "/barcodes"]
 	this_shape = hF[group + "/shape"]
-	rowN = shape[0]
-	colN = shape[1]
+	rowN = this_shape[0]
+	colN = this_shape[1]
 
 	if len(data) == 0:
 		genes = this_genes
