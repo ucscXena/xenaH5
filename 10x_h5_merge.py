@@ -24,7 +24,20 @@ def same(genes, this_genes):
 			return False
 	return True
 
+def output_init (output, size_data, size_indptr):
+	#output initiation
+	f = h5py.File(output,'w')
+	g = f.create_group(group)
+	g.create_dataset('indptr', (size_indptr,), dtype='i8', compression="gzip")
+	g.create_dataset('data', (size_data,), dtype='i4', compression="gzip")
+	g.create_dataset('indices', (size_data,), dtype='i8', compression="gzip")
+	g.create_dataset('barcodes', (size_indptr-1,),  dtype='S18', compression="gzip")
+	g['indptr'][0] = 0
+	return f
+
 def addH5file(h5file, group, g, counter_data, counter_indptr):
+	print h5file
+
 	hF = h5py.File(h5file)
 
 	this_indptr = hF[group +"/indptr"]
@@ -56,16 +69,16 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 
 	# indptr
 	indptr_offset = g['indptr'][counter_indptr]
+	print "indptr offset", indptr_offset
+
 	for i in range (0, len(this_indptr)):
 		g['indptr'][counter_indptr + i] = this_indptr[i] + indptr_offset
-	print "indptr offset", indptr_offset
+	g['indptr'][counter_indptr : counter_indptr + len(this_indptr)] = map(lambda x : x + indptr_offset, this_indptr)
+	print g['indptr'][counter_indptr], this_indptr[0], g['indptr'][0]
 	counter_indptr = counter_indptr + len(this_indptr) - 1
 
-	g['indices'][counter_data: counter_data + len(this_indices) ] = this_indices[:]
-	print g['indices'][counter_data], this_indices[0], g['indices'][0]
-
-	g['data'][counter_data: counter_data + len(this_data) ] = this_data[:]
-	print g['data'][counter_data], this_indices[0], g['data'][0]
+	g['indices'][counter_data : counter_data + len(this_indices) ] = this_indices[:]
+	g['data'][counter_data : counter_data + len(this_data) ] = this_data[:]
 	counter_data = counter_data + len(this_data)
 
 	return counter_data,  counter_indptr
@@ -97,15 +110,7 @@ for root, dirs, files in os.walk(h5filedir):
 			size_indptr = size_indptr + this_size_indptr - 1
 
 print size_indptr, size_data
-
-#output initiation
-f = h5py.File(output,'w')
-g = f.create_group(group)
-g.create_dataset('indptr', (size_indptr,), dtype='i8', compression="gzip")
-g.create_dataset('data', (size_data,), dtype='i4', compression="gzip")
-g.create_dataset('indices', (size_data,), dtype='i8', compression="gzip")
-g.create_dataset('barcodes', (size_indptr-1,),  dtype='S18', compression="gzip")
-g['indptr'][0] = 0
+fout = output_init (output, size_data, size_indptr)
 
 count = 0
 counter_data = 0
