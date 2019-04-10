@@ -6,12 +6,16 @@ import os, sys
 def same(genes, this_genes):
 	if len(genes) != len(this_genes):
 		return False
+
+        mismatch_genes = any(x[0]!= x[1] for x in zip(genes, this_genes))
+        if mismatch_genes:
+                return False
         '''
 	for i in range(0, len(genes)):
 		if genes[i] != this_genes[i]:
 			return False
-        '''
-	return True
+	'''
+        return True
 
 def output_init (output, group, size_data, size_indptr, example_file):
 	# examle file
@@ -78,8 +82,7 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 
 	# shape
 	g['shape'][0] = len(g['genes'])
-	g['shape'][1] = len(g['barcodes'])
-
+	g['shape'][1] = counter_indptr
 	return counter_data,  counter_indptr
 
 def getSizeH5file(h5file, group):
@@ -108,7 +111,6 @@ for root, dirs, files in os.walk(h5filedir):
 			size_data = size_data + this_size_data
 			size_indptr = size_indptr + this_size_indptr - 1
 
-print size_indptr, size_data
 fout = output_init (output, group, size_data, size_indptr, h5file)
 
 count = 0
@@ -120,11 +122,14 @@ for root, dirs, files in os.walk(h5filedir):
 			h5file = root + '/' +  file
 			count = count +1
 			counter_data,  counter_indptr = addH5file(h5file, group, fout[group], counter_data, counter_indptr)
+        '''
 	if count == 2:
 		break		
+        '''
 
 #set shape
 fout[group].attrs['shape'] = fout[group]['shape']
 #output
 fout.close()
-#output_h5 (output, group, data, indices, indptr, shape, genes, gene_names, barcodes)
+
+print size_indptr, size_data
