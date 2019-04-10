@@ -45,15 +45,22 @@ def addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes):
 			print h5file, "bad genes, skip"
 			return data, indices, indptr, genes, gene_names, barcodes
 
-	print len(barcodes)
 	barcodes.extend(this_barcodes)
-	print len(barcodes)
-	#data = this_data
-	#indptr = this_indptr
-	#indices = this_indices
+
+	#the standard CSC representation
+    #where the row indices for column i are stored in indices[indptr[i]:indptr[i+1]] and
+    #their corresponding values are stored in data[indptr[i]:indptr[i+1]].
+    #If the shape parameter is not supplied, the matrix dimensions are inferred from the index arrays.
+
+	data.extend(this_data)
+	indices.extend(this_indices)
+
+	indptr_offset = indptr[-1]
+	offset_indptr = map(lambda x: x+ indptr_offset, this_indptr)
+	indptr.extend(offset_indptr[1:])
 	#indptr = this_indptr
 	#shape = this_shape
-
+	return data, indices, indptr, genes, gene_names, barcodes
 
 
 if __name__ == "__main__" and len(sys.argv[:])!= 5:
@@ -80,9 +87,10 @@ for root, dirs, files in os.walk(h5filedir):
 		if file == namepatten:
 			h5file = root + '/' +  file
 			count = count +1
-			addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes)
+			data, indices, indptr, genes, gene_names, barcodes = \
+				addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes)
 			if count == 2:
 				sys.exit()
 
 
-data, indices, indptr, genes, gene_names, barcodes = output_h5 (output, group, data, indices, indptr, shape, genes, gene_names, barcodes)
+output_h5 (output, group, data, indices, indptr, shape, genes, gene_names, barcodes)
