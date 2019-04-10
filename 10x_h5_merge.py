@@ -3,19 +3,18 @@ from array import *
 import array
 import os, sys
 
-def same(genes, this_genes):
+def same(genes, this_genes, quick = False):
 	if len(genes) != len(this_genes):
 		return False
 
-        mismatch_genes = any(x[0]!= x[1] for x in zip(genes, this_genes))
-        if mismatch_genes:
-                return False
-        '''
-	for i in range(0, len(genes)):
-		if genes[i] != this_genes[i]:
-			return False
-	'''
-        return True
+	if quick:
+		return True
+
+	mismatch_genes = any(x[0]!= x[1] for x in zip(genes, this_genes))
+	if mismatch_genes:
+		return False
+
+	return True
 
 def output_init (output, group, size_data, size_indptr, example_file):
 	# examle file
@@ -52,7 +51,7 @@ def addH5file(h5file, group, g, counter_data, counter_indptr):
 	colN = this_shape[1]
 
 	# check genes
-	if not same(g['genes'], this_genes):
+	if not same(g['genes'], this_genes, quick=False):
 		print h5file, "different genes, skip"
 		return counter_data,  counter_indptr
 
