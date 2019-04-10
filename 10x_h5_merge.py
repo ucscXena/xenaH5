@@ -46,17 +46,19 @@ def addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes):
 			return data, indices, indptr, genes, gene_names, barcodes
 
 	barcodes.extend(this_barcodes)
-
+	print "bar"
 	#the standard CSC representation
     #where the row indices for column i are stored in indices[indptr[i]:indptr[i+1]] and
     #their corresponding values are stored in data[indptr[i]:indptr[i+1]].
     #If the shape parameter is not supplied, the matrix dimensions are inferred from the index arrays.
 
+	indptr_offset = indptr[-1]
+	offset_indptr = map(lambda x: x+ indptr_offset, this_indptr)
+	print "indptr offset"
+
 	data.extend(this_data)
 	indices.extend(this_indices)
 
-	indptr_offset = indptr[-1]
-	offset_indptr = map(lambda x: x+ indptr_offset, this_indptr)
 	indptr.extend(offset_indptr[1:])
 	#indptr = this_indptr
 	#shape = this_shape
