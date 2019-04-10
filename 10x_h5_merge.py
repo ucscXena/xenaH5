@@ -18,7 +18,7 @@ def same(genes, this_genes):
 	if len(genes) != len(this_genes):
 		return False
 	for i in range(0, len(genes)):
-		if genes[i] != this_genes[i]
+		if genes[i] != this_genes[i]:
 			return False
 	return True
 
@@ -40,10 +40,11 @@ def addH5file(h5file, data, indices, indptr, genes, gene_names, barcodes):
 		gene_names = this_gene_names
 	
 	# check genes
-	if !same(genes, this_genes):
+	if not same(genes, this_genes):
 		print "bad genes"
+		
 	# check gene_names
-	if !same(gene_names, this_gene_names):
+	if not same(gene_names, this_gene_names):
 		print "bad gene names"
 
 	
