@@ -106,10 +106,10 @@ indices = hF[group + "/indices"]
 data = hF[group + "/data"]
 obs = hF['obs']
 var = hF['var']
-genes = var # hF[group + "/genes"]
-barcodes = obs #hF[group + "/barcodes"]
-rowN = len(var)# old shape[0]
-colN = len(obs) # old shape[1]
+genes = map(lambda x: np.asscalar(x)[0], np.nditer(var))  # hF[group + "/genes"]
+barcodes = map(lambda x: np.asscalar(x)[0], np.nditer(obs))  #hF[group + "/barcodes"]
+rowN = var.len() # shape[0]
+colN = obs.len() # shape[1]
 counter_indptr_size = rowN
 
 #basic sanity check
@@ -142,4 +142,3 @@ else: #slow [4, 5]
     elif (len(indptr) -1 == len(barcodes)): # transpose h5 in memory and write out to xena orientation
         print "transpose h5 in memory, then write out to xena file"
         h5_T_to_xena (output, data, indices, indptr, counter_indptr_size, genes, barcodes)
-
