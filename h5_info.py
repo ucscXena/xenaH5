@@ -2,25 +2,25 @@ import h5py
 import sys
 
 def print_attrs(name, obj):
-    print name, len(obj), obj
+    print (name, len(obj), obj)
     if name[-6:] == "/shape":
-        print name, "shape", obj[0],obj[1]
+        print (name, "shape", obj[0],obj[1])
 
 def example_func(name, obj):
     if isinstance(obj, h5py.Dataset): # obj is a dataset
-        print name, len(obj), obj[:5]
+        print (name, len(obj), obj[:5])
 
 def get_h5_info (h5_file):
     hF = h5py.File(h5_file)
-    print "name:", hF.name
-    print "keys:", hF.keys()
+    print ("name:", hF.name)
+    print ("keys:", hF.keys())
 
     print 
-    print "attributes"
+    print ("attributes")
     hF.visititems(print_attrs)
 
     print
-    print "dataset example" 
+    print ("dataset example")
     hF.visititems(example_func)
 
     '''
@@ -32,7 +32,7 @@ def get_h5_info (h5_file):
     '''
 
 if __name__ == "__main__" and len(sys.argv[:])!=2:
-    print "pyton h5_xena_T.py h5file"
+    print ("python h5_xena_T.py h5file")
     sys.exit()
 
 h5file = sys.argv[1]
